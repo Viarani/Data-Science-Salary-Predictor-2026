@@ -1,69 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>IRIS Salary Predictor Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DS Salary Predictor | IRIS Research</title>
     <style>
-        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
-        .container { max-width: 500px; background: white; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.1); }
-        select, input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-        #result { margin-top: 20px; font-weight: bold; text-align: center; color: #27ae60; font-size: 20px; }
-        label { font-size: 14px; color: #666; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { color: #1a73e8; text-align: center; margin-bottom: 5px; }
+        label { font-weight: bold; display: block; margin-top: 15px; color: #555; font-size: 14px; }
+        select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ddd; outline: none; background-color: #fff; }
+        button { width: 100%; padding: 12px; margin-top: 25px; background-color: #1a73e8; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
+        button:hover { background-color: #1557b0; }
+        #result-box { margin-top: 25px; padding: 15px; border-radius: 8px; text-align: center; display: none; }
+        .success { background-color: #e6f4ea; color: #1e8e3e; border: 1px solid #1e8e3e; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2 style="text-align: center;">Salary Predictor</h2>
-        
-        <label>Work Year</label>
-        <select id="work_year">{% for x in options.work_year %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
 
-        <label>Job Title</label>
-        <select id="job_title">{% for x in options.job_title %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+<div class="card">
+    <h2>Salary Predictor 2026</h2>
+    <p style="text-align: center; color: #777; font-size: 14px; margin-bottom: 20px;">BSO IRIS - Research Department</p>
 
-        <label>Experience Level</label>
-        <select id="experience_level">{% for x in options.experience_level %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+    <label>Work Year</label>
+    <select id="work_year">
+        {% for x in options.work_year %}<option value="{{ x }}">{{ x }}</option>{% endfor %}
+    </select>
 
-        <label>Employment Type</label>
-        <select id="employment_type">{% for x in options.employment_type %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+    <label>Job Title</label>
+    <select id="job_title">
+        {% for x in options.job_title %}<option value="{{ x }}">{{ x }}</option>{% endfor %}
+    </select>
 
-        <label>Employee Residence</label>
-        <select id="employee_residence">{% for x in options.employee_residence %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+    <label>Experience Level</label>
+    <select id="experience_level">
+        {% for x in options.experience_level %}<option value="{{ x }}">{{ labels.experience_level[x] if x in labels.experience_level else x }}</option>{% endfor %}
+    </select>
 
-        <label>Remote Ratio</label>
-        <select id="remote_ratio">{% for x in options.remote_ratio %}<option value="{{x}}">{{x}}%</option>{% endfor %}</select>
+    <label>Employment Type</label>
+    <select id="employment_type">
+        {% for x in options.employment_type %}<option value="{{ x }}">{{ labels.employment_type[x] if x in labels.employment_type else x }}</option>{% endfor %}
+    </select>
 
-        <label>Company Location</label>
-        <select id="company_location">{% for x in options.company_location %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+    <label>Remote Work Percentage</label>
+    <select id="remote_ratio">
+        {% for x in options.remote_ratio %}<option value="{{ x }}">{{ labels.remote_ratio[x] if x in labels.remote_ratio else x }}</option>{% endfor %}
+    </select>
 
-        <label>Company Size</label>
-        <select id="company_size">{% for x in options.company_size %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+    <label>Employee Residence</label>
+    <select id="employee_residence">
+        {% for x in options.employee_residence %}<option value="{{ x }}">{{ labels.location[x] if x in labels.location else x }}</option>{% endfor %}
+    </select>
 
-        <button onclick="sendData()">Check Estimated Salary</button>
-        <div id="result"></div>
+    <label>Company Location</label>
+    <select id="company_location">
+        {% for x in options.company_location %}<option value="{{ x }}">{{ labels.location[x] if x in labels.location else x }}</option>{% endfor %}
+    </select>
+
+    <label>Organization Size</label>
+    <select id="company_size">
+        {% for x in options.company_size %}
+        <option value="{{ x }}">{{ labels.company_size[x] if x in labels.company_size else x }}</option>
+        {% endfor %}
+    </select>
+
+    <button onclick="predictSalary()">Check Salary Estimate</button>
+
+    <div id="result-box">
+        <span id="prediction-text"></span>
     </div>
+</div>
 
-    <script>
-        async function sendData() {
-            const payload = {
-                work_year: document.getElementById('work_year').value,
-                job_title: document.getElementById('job_title').value,
-                experience_level: document.getElementById('experience_level').value,
-                employment_type: document.getElementById('employment_type').value,
-                employee_residence: document.getElementById('employee_residence').value,
-                remote_ratio: document.getElementById('remote_ratio').value,
-                company_location: document.getElementById('company_location').value,
-                company_size: document.getElementById('company_size').value
-            };
+<script>
+    async function predictSalary() {
+        const data = {
+            work_year: document.getElementById('work_year').value,
+            job_title: document.getElementById('job_title').value,
+            experience_level: document.getElementById('experience_level').value,
+            employment_type: document.getElementById('employment_type').value,
+            employee_residence: document.getElementById('employee_residence').value,
+            remote_ratio: document.getElementById('remote_ratio').value,
+            company_location: document.getElementById('company_location').value,
+            company_size: document.getElementById('company_size').value
+        };
 
-            const res = await fetch('/predict', {
+        const resultBox = document.getElementById('result-box');
+        const predText = document.getElementById('prediction-text');
+
+        try {
+            const response = await fetch('/predict', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
             });
-            const data = await res.json();
-            document.getElementById('result').innerText = data.result ? "$ " + data.result.toLocaleString() : "Error!";
+
+            const result = await response.json();
+
+            if (result.result) {
+                resultBox.style.display = 'block';
+                resultBox.className = 'success';
+                predText.innerHTML = "<b>Estimated Annual Salary:</b><br><span style='font-size: 24px;'>$ " + result.result.toLocaleString() + "</span>";
+            } else {
+                alert("Error: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Gagal terhubung ke server.");
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
