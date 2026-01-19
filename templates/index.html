@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IRIS Salary Predictor Pro</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+        .container { max-width: 500px; background: white; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.1); }
+        select, input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #2c3e50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        #result { margin-top: 20px; font-weight: bold; text-align: center; color: #27ae60; font-size: 20px; }
+        label { font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="text-align: center;">Salary Predictor</h2>
+        
+        <label>Work Year</label>
+        <select id="work_year">{% for x in options.work_year %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Job Title</label>
+        <select id="job_title">{% for x in options.job_title %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Experience Level</label>
+        <select id="experience_level">{% for x in options.experience_level %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Employment Type</label>
+        <select id="employment_type">{% for x in options.employment_type %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Employee Residence</label>
+        <select id="employee_residence">{% for x in options.employee_residence %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Remote Ratio</label>
+        <select id="remote_ratio">{% for x in options.remote_ratio %}<option value="{{x}}">{{x}}%</option>{% endfor %}</select>
+
+        <label>Company Location</label>
+        <select id="company_location">{% for x in options.company_location %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <label>Company Size</label>
+        <select id="company_size">{% for x in options.company_size %}<option value="{{x}}">{{x}}</option>{% endfor %}</select>
+
+        <button onclick="sendData()">Check Estimated Salary</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function sendData() {
+            const payload = {
+                work_year: document.getElementById('work_year').value,
+                job_title: document.getElementById('job_title').value,
+                experience_level: document.getElementById('experience_level').value,
+                employment_type: document.getElementById('employment_type').value,
+                employee_residence: document.getElementById('employee_residence').value,
+                remote_ratio: document.getElementById('remote_ratio').value,
+                company_location: document.getElementById('company_location').value,
+                company_size: document.getElementById('company_size').value
+            };
+
+            const res = await fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            document.getElementById('result').innerText = data.result ? "$ " + data.result.toLocaleString() : "Error!";
+        }
+    </script>
+</body>
+</html>
