@@ -82,7 +82,7 @@ Salary-Predictor-2026/
 ├── app.py                       # Inti backend Flask & logika prediksi
 ├── salaries.csv                 # Dataset utama
 ├── model_salary_predictor.pkl   # Model ML yang sudah dilatih
-├── prototype.ipynb              # Notebook eksperimen ML
+├── code.ipynb                   # Notebook eksperimen ML
 └── templates/
     └── index.html               # Antarmuka pengguna (UI)
 ```
@@ -110,5 +110,5 @@ Running on http://127.0.0.1:5000
 Buka browser dan kunjungi:
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:5000
 ```
