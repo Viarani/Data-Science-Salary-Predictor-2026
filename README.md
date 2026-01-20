@@ -5,7 +5,7 @@ Aplikasi berbasis web untuk memprediksi **estimasi gaji tahunan profesional di b
 ---
 
 ## 🏙️ Background
-Dalam industri data yang berkembang pesat, transparansi gaji menjadi krusial. Proyek ini bertujuan untuk menganalisis faktor-faktor yang memengaruhi kompensasi global, seperti tingkat pengalaman, lokasi perusahaan, hingga rasio kerja jarak jauh (remote). Dengan model ini, calon praktisi data dapat mengestimasi nilai pasar mereka di tahun 2026 berdasarkan tren historis.
+Dalam industri data yang berkembang pesat, transparansi gaji menjadi satu diantara pertimbangan krusial bagi calon para praktisi. Proyek ini bertujuan untuk menganalisis faktor-faktor yang memengaruhi kompensasi global, seperti tingkat pengalaman, lokasi perusahaan, rasio kerja jarak jauh (remote), dan faktor-faktor lainnya. Dengan model ini, calon praktisi data dapat mengestimasi nilai pasar mereka di tahun 2026 berdasarkan tren historis.
 
 ---
 
@@ -13,18 +13,18 @@ Dalam industri data yang berkembang pesat, transparansi gaji menjadi krusial. Pr
 
 Data yang digunakan berasal dari file **`salaries.csv`** yang mencakup catatan gaji profesional data di seluruh dunia.
 
-### 🔹 Fitur Utama
+### 🔹 Fitur Lokasi
+- `employee_residence`
+- `company_location`  
+  (menggunakan standar **ISO 3166-1 alpha-2**)
+
+### 🔹 Fitur Lainnya
 - `work_year`
 - `experience_level`
 - `employment_type`
 - `job_title`
 - `remote_ratio`
 - `company_size`
-
-### 🔹 Fitur Lokasi
-- `employee_residence`
-- `company_location`  
-  (menggunakan standar **ISO 3166-1 alpha-2**)
 
 ### 🎯 Target
 - `salary_in_usd` → Gaji tahunan dalam mata uang USD
@@ -49,7 +49,7 @@ Tahapan preprocessing yang dilakukan meliputi:
 ## 🤖 Modeling Approach
 
 - **Algorithm**  
-  Model dikembangkan menggunakan algoritma regresi dan dilatih melalui Jupyter Notebook (`prototype.ipynb`).
+  Model dikembangkan menggunakan algoritma regresi dan dilatih melalui Jupyter Notebook (`code.ipynb`).
 
 - **Deployment**  
   Model disimpan dalam format `.pkl` menggunakan `joblib` untuk integrasi cepat dengan backend Flask.
@@ -83,7 +83,6 @@ Salary-Predictor-2026/
 ├── salaries.csv                 # Dataset utama
 ├── model_salary_predictor.pkl   # Model ML yang sudah dilatih
 ├── prototype.ipynb              # Notebook eksperimen ML
-├── requirements.txt             # Daftar library yang dibutuhkan
 └── templates/
     └── index.html               # Antarmuka pengguna (UI)
 ```
@@ -91,13 +90,6 @@ Salary-Predictor-2026/
 ---
 
 ## 🚀 Cara Menjalankan Proyek
-
-### ⚙️ Konfigurasi Backend (Opsional)
-Jika backend dijalankan pada **IP atau port yang berbeda**, silakan sesuaikan nilai variabel `BACKEND_URL` pada file `app.py`.
-
----
-
-### ▶️ Menjalankan Backend
 1. Buka terminal.
 2. Arahkan ke direktori backend.
 3. Jalankan perintah berikut:
@@ -110,23 +102,6 @@ python app.py
 
 ```text
 Running on http://127.0.0.1:5000
-```
-
----
-
-### ▶️ Menjalankan Frontend
-1. Buka tab atau jendela terminal baru.
-2. Arahkan ke direktori frontend.
-3. Jalankan perintah berikut:
-
-```bash
-python app.py
-```
-
-4. Tunggu hingga muncul pesan:
-
-```text
-Running on http://127.0.0.1:8000
 ```
 
 ---
